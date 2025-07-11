@@ -205,7 +205,6 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Linha 1: Degradê + avatar + texto
             Container(
               width: double.infinity,
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
@@ -389,7 +388,6 @@ class _HomeScreenState extends State<HomeScreen> {
         }
       }
     } catch (e) {
-      // debug: Erro ao abrir URL: $e
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
