@@ -6,16 +6,8 @@ import 'services/auth_service.dart';
 import 'screens/login_screen.dart';
 import 'screens/home_screen.dart';
 import 'package:provider/provider.dart';
-
-class ProductCardProvider extends ChangeNotifier {
-  int? _selectedIndex;
-  int? get selectedIndex => _selectedIndex;
-
-  void select(int index) {
-    _selectedIndex = index;
-    notifyListeners();
-  }
-}
+import 'providers/user_provider.dart';
+import 'providers/product_card_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,7 +27,10 @@ void main() async {
 
   runApp(
     MultiProvider(
-      providers: [ChangeNotifierProvider(create: (_) => ProductCardProvider())],
+      providers: [
+        ChangeNotifierProvider(create: (_) => ProductCardProvider()),
+        ChangeNotifierProvider(create: (_) => UserProvider()),
+      ],
       child: const MyApp(),
     ),
   );

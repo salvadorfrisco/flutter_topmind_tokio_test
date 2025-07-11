@@ -104,4 +104,13 @@ class AuthService {
       throw _handleAuthException(e);
     }
   }
+
+  // Atualizar displayName do usuário
+  Future<void> updateDisplayName(String name) async {
+    final user = _auth.currentUser;
+    if (user != null) {
+      await user.updateDisplayName(name);
+      await user.reload();
+    }
+  }
 } 

@@ -7,7 +7,9 @@ import '../widgets/section_card.dart';
 import 'login_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:provider/provider.dart';
-import '../main.dart';
+import '../providers/user_provider.dart';
+import '../providers/product_card_provider.dart';
+import '../widgets/drawer_item.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -50,6 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     // debug: _currentUser: $_currentUser
+    print('_currentUser: $_currentUser');
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: Colors.black,
@@ -79,13 +82,17 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: Icon(Icons.person, color: Colors.teal, size: 28),
                       ),
                       SizedBox(width: 16),
-                      Text(
-                        'Caio Maximo',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      Consumer<UserProvider>(
+                        builder: (context, userProvider, _) {
+                          return Text(
+                            userProvider.displayName ?? 'Usuário',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          );
+                        },
                       ),
                     ],
                   ),
@@ -96,16 +103,22 @@ class _HomeScreenState extends State<HomeScreen> {
               child: ListView(
                 padding: EdgeInsets.zero,
                 children: [
-                  _buildDrawerItem(Icons.settings, 'Home / Seguros'),
-                  _buildDrawerItem(Icons.settings, 'Minhas Contratações'),
-                  _buildDrawerItem(Icons.settings, 'Meus Sinistros'),
-                  _buildDrawerItem(Icons.settings, 'Minha Família'),
-                  _buildDrawerItem(Icons.settings, 'Meus Bens'),
-                  _buildDrawerItem(Icons.settings, 'Pagamentos'),
-                  _buildDrawerItem(Icons.settings, 'Coberturas'),
-                  _buildDrawerItem(Icons.settings, 'Validar Boleto'),
-                  _buildDrawerItem(Icons.settings, 'Telefones Importantes'),
-                  _buildDrawerItem(Icons.settings, 'Configurações'),
+                  DrawerItem(icon: Icons.settings, title: 'Home / Seguros'),
+                  DrawerItem(
+                    icon: Icons.settings,
+                    title: 'Minhas Contratações',
+                  ),
+                  DrawerItem(icon: Icons.settings, title: 'Meus Sinistros'),
+                  DrawerItem(icon: Icons.settings, title: 'Minha Família'),
+                  DrawerItem(icon: Icons.settings, title: 'Meus Bens'),
+                  DrawerItem(icon: Icons.settings, title: 'Pagamentos'),
+                  DrawerItem(icon: Icons.settings, title: 'Coberturas'),
+                  DrawerItem(icon: Icons.settings, title: 'Validar Boleto'),
+                  DrawerItem(
+                    icon: Icons.settings,
+                    title: 'Telefones Importantes',
+                  ),
+                  DrawerItem(icon: Icons.settings, title: 'Configurações'),
                   ListTile(
                     leading: const Icon(Icons.logout, color: Colors.teal),
                     title: const Text(
@@ -226,23 +239,27 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Icon(Icons.person, color: Colors.teal, size: 28),
                   ),
                   const SizedBox(width: 16),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      Text(
-                        'Bem vindo',
-                        style: TextStyle(color: Colors.white, fontSize: 14),
-                      ),
-                      SizedBox(height: 2),
-                      Text(
-                        'Caio Maximo',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
+                  Consumer<UserProvider>(
+                    builder: (context, userProvider, _) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Bem vindo!',
+                            style: TextStyle(color: Colors.white, fontSize: 14),
+                          ),
+                          SizedBox(height: 2),
+                          Text(
+                            userProvider.displayName ?? 'Usuário',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      );
+                    },
                   ),
                 ],
               ),
@@ -398,16 +415,4 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     }
   }
-}
-
-Widget _buildDrawerItem(IconData icon, String title) {
-  return ListTile(
-    dense: true,
-    visualDensity: const VisualDensity(vertical: -3),
-    leading: Icon(icon, color: Colors.teal),
-    title: Text(title, style: const TextStyle(color: Colors.white)),
-    onTap: () {
-      // debug: $title clicado
-    },
-  );
 }

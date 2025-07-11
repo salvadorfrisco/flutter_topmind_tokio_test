@@ -39,22 +39,35 @@ Uma aplicação Flutter responsiva com autenticação Firebase, incluindo tela d
    flutter run -d ios
    ```
 
-## Estrutura do Projeto
+## Estrutura do Projeto (atualizada)
 
 ```
 lib/
-├── main.dart                 # Ponto de entrada da aplicação
-├── services/
-│   └── auth_service.dart     # Serviço de autenticação Firebase
-├── screens/
-│   ├── login_screen.dart     # Tela de login responsiva
-│   └── home_screen.dart      # Tela home após login
-└── widgets/
-    ├── custom_text_field.dart    # Campo de texto customizado
-    ├── social_media_icons.dart   # Ícones de redes sociais
-    ├── test_card.dart           # Card para seção de teste
-    └── section_card.dart        # Card para seções informativas
+  main.dart
+  models/
+  providers/
+    user_provider.dart
+    product_card_provider.dart
+  screens/
+    home_screen.dart
+    login_screen.dart
+  services/
+    auth_service.dart
+  widgets/
+    custom_text_field.dart
+    product_card.dart
+    section_card.dart
+    social_media_icons.dart
+    drawer_item.dart
 ```
+
+- **providers/**: Providers de estado global (ex: usuário, seleção de produto)
+- **widgets/**: Componentes reutilizáveis e widgets customizados
+- **screens/**: Telas principais do app
+- **services/**: Serviços de autenticação, API, etc.
+- **models/**: Modelos de dados (se houver)
+
+O restante das instruções de configuração permanece igual.
 
 ## Funcionalidades
 

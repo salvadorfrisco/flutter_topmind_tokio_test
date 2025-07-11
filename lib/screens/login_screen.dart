@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import '../providers/user_provider.dart';
 import '../services/auth_service.dart';
 import '../widgets/custom_text_field.dart';
 import '../widgets/social_media_icons.dart';
 import 'home_screen.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -16,6 +18,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final _cpfController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _nameController = TextEditingController();
   final _authService = AuthService();
 
   bool _isLoading = false;
@@ -45,6 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
   void dispose() {
     _cpfController.dispose();
     _passwordController.dispose();
+    _nameController.dispose();
     super.dispose();
   }
 
@@ -89,6 +93,15 @@ class _LoginScreenState extends State<LoginScreen> {
 
       await _authService.saveRememberMe(_rememberMe, _cpfController.text);
 
+      // Atualiza o nome no provider após login
+      final user = _authService.currentUser;
+      if (user != null) {
+        Provider.of<UserProvider>(
+          context,
+          listen: false,
+        ).setDisplayName(user.displayName);
+      }
+
       if (mounted) {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => const HomeScreen()),
@@ -126,8 +139,14 @@ class _LoginScreenState extends State<LoginScreen> {
         email,
         _passwordController.text,
       );
-
+      await _authService.updateDisplayName(_nameController.text);
       await _authService.saveRememberMe(_rememberMe, _cpfController.text);
+
+      // Atualiza o nome no provider após cadastro
+      Provider.of<UserProvider>(
+        context,
+        listen: false,
+      ).setDisplayName(_nameController.text);
 
       if (mounted) {
         Navigator.of(context).pushReplacement(
@@ -392,6 +411,20 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
+                          if (_activeTab == 1) ...[
+                            CustomTextField(
+                              controller: _nameController,
+                              labelText: 'Nome',
+                              prefixIcon: Icons.person,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Nome é obrigatório';
+                                }
+                                return null;
+                              },
+                            ),
+                            const SizedBox(height: 12),
+                          ],
                           CustomTextField(
                             controller: _cpfController,
                             labelText: 'CPF',
