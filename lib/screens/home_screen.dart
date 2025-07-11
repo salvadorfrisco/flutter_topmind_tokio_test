@@ -5,7 +5,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../services/auth_service.dart';
 import '../widgets/section_card.dart';
 import 'login_screen.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:url_launcher/url_launcher.dart';
 import 'package:provider/provider.dart';
 import '../main.dart';
@@ -50,7 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print('_currentUser: $_currentUser');
+    // debug: _currentUser: $_currentUser
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: Colors.black,
@@ -390,7 +389,7 @@ class _HomeScreenState extends State<HomeScreen> {
         }
       }
     } catch (e) {
-      print('Erro ao abrir URL: $e');
+      // debug: Erro ao abrir URL: $e
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -410,7 +409,7 @@ Widget _buildDrawerItem(IconData icon, String title) {
     leading: Icon(icon, color: Colors.teal),
     title: Text(title, style: const TextStyle(color: Colors.white)),
     onTap: () {
-      print('$title clicado');
+      // debug: $title clicado
     },
   );
 }
